@@ -247,7 +247,7 @@
     return h('section', { id: 'showcase', class: 'nx-showcase' },
       h('div', { class: 'wrap nx-showcase-head' },
         h('span', { class: 'eyebrow' }, 'The Niche Utility Showcase'),
-        h('h2', { class: 'h2', html: 'Five things you already use,<br>engineered like they matter.' }),
+        h('h2', { class: 'h2', html: 'Five things you already use, engineered like they matter.' }),
         h('p', { class: 'lede' }, 'Each one solves a quiet daily frustration you stopped noticing. Tap any product to see the smart parts up close.')),
       h('div', { class: 'wrap nx-showcase-list' }, PRODUCTS.map((p, i) => buildProductBlock(p, i, i % 2 === 1)))
     );
