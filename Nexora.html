@@ -198,6 +198,24 @@ a { color: inherit; text-decoration: none; }
   .nx-hero-visual { min-height: 56vh; }
   .nx-scroll-cue { display: none; }
 }
+/* Desktop: fit the whole hero (text + all five tiles) on one screen — no scroll. */
+@media (min-width: 901px) {
+  .nx-hero { padding-top: 0; }
+  .nx-hero-grid { min-height: 100vh; height: 100vh; }
+  .nx-hero-copy { padding-top: 92px; padding-bottom: 40px; }
+  .nx-hero .display { font-size: clamp(40px, 4.6vw, 64px); }
+  .nx-hero-lede { margin-top: 18px; }
+  .nx-hero-cta { margin-top: 26px; }
+  .nx-hero-meta { margin-top: 22px; }
+}
+/* Short desktop viewports: trim type/spacing further so it still never scrolls. */
+@media (min-width: 901px) and (max-height: 760px) {
+  .nx-hero-copy { padding-top: 84px; padding-bottom: 28px; }
+  .nx-hero .display { font-size: clamp(36px, 4vw, 52px); }
+  .nx-hero-lede { margin-top: 14px; font-size: 16px; }
+  .nx-hero-cta { margin-top: 20px; }
+  .nx-hero-meta { margin-top: 18px; }
+}
 
 /* ---------------- Showcase ---------------- */
 .nx-showcase { padding: clamp(72px, 11vw, 150px) 0 40px; }
