@@ -748,28 +748,51 @@ a { color: inherit; text-decoration: none; }
      HERO
      ============================================================ */
   function buildHero() {
+    const copyEl = h('div', { class: 'nx-hero-copy' },
+      h('span', { class: 'eyebrow nx-hero-eyebrow' }, 'Smart · Simple · Essential'),
+      h('h1', { class: 'display', html: 'The five things<br>you touch daily,<br><em class="nx-em">quietly perfected.</em>' }),
+      h('p', { class: 'lede nx-hero-lede' }, 'Nexora makes a single, considered version of the everyday objects you reach for without thinking — so each one earns its place.'),
+      h('div', { class: 'nx-hero-cta' },
+        h('a', { href: '#showcase', class: 'btn btn-primary' }, icon('ri-arrow-down-line'), ' Explore the 5 Essentials'),
+        h('button', { class: 'btn btn-ghost', onclick: () => { cart.addBundle(); cart.setOpen(true); } }, 'Shop the set')),
+      h('div', { class: 'nx-hero-meta' },
+        h('span', {}, icon('ri-truck-line'), ' Free 2-day shipping'),
+        h('span', {}, icon('ri-shield-check-line'), ' 2-year warranty')));
+
+    const visualEl = h('div', { class: 'nx-hero-visual' },
+      h('div', { class: 'nx-hero-tiles' }, PRODUCTS.map((p, i) =>
+        h('figure', { class: 'nx-hero-tile' + (i === 0 ? ' feature' : '') },
+          h('img', { src: p.hero, alt: p.name + ' — ' + p.category, loading: i === 0 ? 'eager' : 'lazy' }),
+          h('figcaption', {},
+            h('span', { class: 'nx-hero-tile-name serif' }, p.name),
+            h('span', { class: 'nx-hero-tile-cat' }, p.category))))),
+      h('div', { class: 'nx-hero-badge' },
+        h('span', { class: 'serif' }, '5'),
+        h('span', { html: 'essentials,<br>one system' })));
+
+    // When the columns stack (mobile), match the tile mosaic's height to the
+    // text column so the two halves read as equal blocks. On desktop the grid
+    // already stretches both columns, so we clear the inline height.
+    const stacked = typeof window.matchMedia === 'function' ? window.matchMedia('(max-width: 900px)') : null;
+    const syncHeight = () => {
+      if (stacked && stacked.matches) {
+        const hh = copyEl.offsetHeight;
+        visualEl.style.minHeight = '0';      // defeat the CSS 56vh floor
+        visualEl.style.height = hh + 'px';   // match the text column exactly
+      } else {
+        visualEl.style.height = '';
+        visualEl.style.minHeight = '';       // let the grid stretch govern
+      }
+    };
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(syncHeight); else syncHeight();
+    window.addEventListener('resize', syncHeight);
+    window.addEventListener('load', syncHeight);
+    if (typeof document !== 'undefined' && document.fonts && document.fonts.ready) document.fonts.ready.then(syncHeight);
+    // Keep them locked together through any reflow (font swap, line re-wrap, etc.).
+    if (typeof ResizeObserver === 'function') new ResizeObserver(syncHeight).observe(copyEl);
+
     return h('section', { class: 'nx-hero', id: 'top' },
-      h('div', { class: 'nx-hero-grid' },
-        h('div', { class: 'nx-hero-copy' },
-          h('span', { class: 'eyebrow nx-hero-eyebrow' }, 'Smart · Simple · Essential'),
-          h('h1', { class: 'display', html: 'The five things<br>you touch daily,<br><em class="nx-em">quietly perfected.</em>' }),
-          h('p', { class: 'lede nx-hero-lede' }, 'Nexora makes a single, considered version of the everyday objects you reach for without thinking — so each one earns its place.'),
-          h('div', { class: 'nx-hero-cta' },
-            h('a', { href: '#showcase', class: 'btn btn-primary' }, icon('ri-arrow-down-line'), ' Explore the 5 Essentials'),
-            h('button', { class: 'btn btn-ghost', onclick: () => { cart.addBundle(); cart.setOpen(true); } }, 'Shop the set')),
-          h('div', { class: 'nx-hero-meta' },
-            h('span', {}, icon('ri-truck-line'), ' Free 2-day shipping'),
-            h('span', {}, icon('ri-shield-check-line'), ' 2-year warranty'))),
-        h('div', { class: 'nx-hero-visual' },
-          h('div', { class: 'nx-hero-tiles' }, PRODUCTS.map((p, i) =>
-            h('figure', { class: 'nx-hero-tile' + (i === 0 ? ' feature' : '') },
-              h('img', { src: p.hero, alt: p.name + ' — ' + p.category, loading: i === 0 ? 'eager' : 'lazy' }),
-              h('figcaption', {},
-                h('span', { class: 'nx-hero-tile-name serif' }, p.name),
-                h('span', { class: 'nx-hero-tile-cat' }, p.category))))),
-          h('div', { class: 'nx-hero-badge' },
-            h('span', { class: 'serif' }, '5'),
-            h('span', { html: 'essentials,<br>one system' })))),
+      h('div', { class: 'nx-hero-grid' }, copyEl, visualEl),
       h('a', { href: '#showcase', class: 'nx-scroll-cue', 'aria-label': 'Scroll to products' }, icon('ri-arrow-down-line'))
     );
   }
