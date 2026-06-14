@@ -143,7 +143,12 @@
             h('span', {}, icon('ri-truck-line'), ' Free 2-day shipping'),
             h('span', {}, icon('ri-shield-check-line'), ' 2-year warranty'))),
         h('div', { class: 'nx-hero-visual' },
-          h('img', { src: 'assets/images/hero.png', alt: 'The five Nexora essentials arranged together' }),
+          h('div', { class: 'nx-hero-tiles' }, PRODUCTS.map((p, i) =>
+            h('figure', { class: 'nx-hero-tile' + (i === 0 ? ' feature' : '') },
+              h('img', { src: p.hero, alt: p.name + ' — ' + p.category, loading: i === 0 ? 'eager' : 'lazy' }),
+              h('figcaption', {},
+                h('span', { class: 'nx-hero-tile-name serif' }, p.name),
+                h('span', { class: 'nx-hero-tile-cat' }, p.category))))),
           h('div', { class: 'nx-hero-badge' },
             h('span', { class: 'serif' }, '5'),
             h('span', { html: 'essentials,<br>one system' })))),

@@ -157,7 +157,27 @@ a { color: inherit; text-decoration: none; }
 .nx-hero-meta span { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink-faint); font-weight: 500; }
 .nx-hero-meta i { color: var(--accent); font-size: 17px; }
 .nx-hero-visual { position: relative; overflow: hidden; background: var(--bg-deep); }
-.nx-hero-visual img { width: 100%; height: 100%; object-fit: cover; object-position: 60% center; }
+.nx-hero-visual > img { width: 100%; height: 100%; object-fit: cover; object-position: 60% center; }
+
+/* hero product mosaic — all five essentials as stylish tiles */
+.nx-hero-tiles {
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr);
+  gap: 8px; width: 100%; height: 100%; background: var(--bg-deep);
+}
+.nx-hero-tile { position: relative; overflow: hidden; margin: 0; background: var(--surface); }
+.nx-hero-tile.feature { grid-row: span 2; }
+.nx-hero-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.nx-hero-tile:hover img { transform: scale(1.06); }
+.nx-hero-tile figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 1px;
+  padding: 16px 14px 13px; color: #fff;
+  background: linear-gradient(to top, rgba(20,14,6,.62), rgba(20,14,6,.18) 60%, transparent);
+  opacity: 0; transform: translateY(8px); transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.nx-hero-tile:hover figcaption { opacity: 1; transform: translateY(0); }
+.nx-hero-tile-name { font-size: 21px; line-height: 1; }
+.nx-hero-tile-cat { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; opacity: .88; }
+@media (hover: none) { .nx-hero-tile figcaption { opacity: 1; transform: none; } }
 .nx-hero-badge {
   position: absolute; left: -1px; bottom: 40px; background: var(--surface);
   padding: 18px 26px 18px 22px; display: flex; align-items: center; gap: 14px;
@@ -741,7 +761,12 @@ a { color: inherit; text-decoration: none; }
             h('span', {}, icon('ri-truck-line'), ' Free 2-day shipping'),
             h('span', {}, icon('ri-shield-check-line'), ' 2-year warranty'))),
         h('div', { class: 'nx-hero-visual' },
-          h('img', { src: 'assets/images/hero.png', alt: 'The five Nexora essentials arranged together' }),
+          h('div', { class: 'nx-hero-tiles' }, PRODUCTS.map((p, i) =>
+            h('figure', { class: 'nx-hero-tile' + (i === 0 ? ' feature' : '') },
+              h('img', { src: p.hero, alt: p.name + ' — ' + p.category, loading: i === 0 ? 'eager' : 'lazy' }),
+              h('figcaption', {},
+                h('span', { class: 'nx-hero-tile-name serif' }, p.name),
+                h('span', { class: 'nx-hero-tile-cat' }, p.category))))),
           h('div', { class: 'nx-hero-badge' },
             h('span', { class: 'serif' }, '5'),
             h('span', { html: 'essentials,<br>one system' })))),
