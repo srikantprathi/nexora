@@ -1,0 +1,17 @@
+# Netlify deploy config for Nexora.
+# Static site, no build step — publish the repo root as-is.
+
+[build]
+  publish = "."
+  command = ""
+
+# Friendly cache headers: long-lived for images/assets, always-fresh HTML.
+[[headers]]
+  for = "/assets/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
