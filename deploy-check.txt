@@ -1,2 +1,0 @@
-nexora deploy check
-deploy-test-1781466994
